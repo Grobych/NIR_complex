@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<GridPane alignment="center" hgap="10" minHeight="600.0" minWidth="1000.0" prefHeight="900.0" prefWidth="1500.0" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nir.controller.Controller">
+   <!--<columnConstraints>-->
+      <!--<ColumnConstraints minWidth="10.0" prefWidth="800.0" />-->
+      <!--<ColumnConstraints minWidth="101.0" prefWidth="200.0" />-->
+   <!--</columnConstraints>-->
+   <!--<rowConstraints>-->
+      <!--<RowConstraints />-->
+      <!--<RowConstraints minHeight="10.0" prefHeight="100.0" />-->
+   <!--</rowConstraints>-->
+   <children>
+      <Pane prefHeight="700.0" prefWidth="1200.0">
+         <children>
+            <Canvas fx:id="mapCanvas" height="700.0" layoutX="10.0" layoutY="13.0" width="1200.0"/>
+            <Canvas fx:id="robotCanvas" height="700.0" layoutX="10.0" layoutY="13.0" width="1200.0"/>
+            <Canvas fx:id="utilCanvas" height="700.0" layoutX="10.0" layoutY="13.0" width="1200.0"/>
+            <Canvas fx:id="pheromoneCanvas" height="700.0" layoutX="10.0" layoutY="13.0" width="1200.0"/>
+         </children>
+      </Pane>
+      <VBox prefHeight="200.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <Button disable="true" fx:id="initButton" onAction="#initButtonClick" mnemonicParsing="false" text="Init" />
+            <Button disable="true" fx:id="routeButton" onAction="#routeButtonClick" mnemonicParsing="false" text="Get Routes" />
+            <Button disable="true" fx:id="startButton" onAction="#startClick" mnemonicParsing="false" text="Start"/>
+            <Button fx:id="partButton" onAction="#partButtonClick" text="particles"/>
+         </children>
+      </VBox>
+      <!--<TextArea fx:id="LogArea" prefHeight="200.0" prefWidth="1200.0" style="-fx-background-color: #AAAAAA;" GridPane.rowIndex="1"  />-->
+      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+        <columns>
+          <TableColumn prefWidth="99.0" text="param" />
+          <TableColumn prefWidth="100.0" text="value" />
+        </columns>
+      </TableView>
+   </children>
+</GridPane>

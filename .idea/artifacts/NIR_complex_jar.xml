@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="NIR_complex:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NIR_complex_jar</output-path>
+    <root id="archive" name="NIR_complex.jar">
+      <element id="module-output" name="NIR_complex" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.8.6/gson-2.8.6.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/apache/commons/commons-math3/3.6.1/commons-math3-3.6.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/locationtech/jts/jts-core/1.16.1/jts-core-1.16.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
