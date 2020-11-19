@@ -15,20 +15,21 @@ import nir.model.map.MapHolder;
 import nir.threads.RenderThread;
 import nir.tst.TestType;
 import nir.tst.Tester;
-import org.apache.log4j.Logger;
+import nir.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-public class Controller implements Initializable {
-    final static Logger logger = Logger.getLogger(Controller.class);
+public class Controller implements Initializable, PropertyChangeListener {
     private RenderThread renderThread;
     private Thread t1,t2;
     private Tester tester = new Tester();
     @FXML
-    static TextArea logArea;
+    TextArea logArea;
     @FXML
     Button initButton, routeButton, startButton, partButton;
     public Controller getInstance(){
@@ -51,10 +52,10 @@ public class Controller implements Initializable {
 
     @FXML
     public void initButtonClick() throws ExecutionException, InterruptedException {
-        logger.info("init");
+        Log.info("init");
         tester.setParam(10, GlobalVariables.getInstance().numberRobots,GlobalVariables.getInstance().robotCapasity);
         tester.init();
-        logger.info("init done");
+        Log.info("init done");
         routeButton.setDisable(false);
 
     }
@@ -68,7 +69,7 @@ public class Controller implements Initializable {
 
     @FXML
     public void startClick(){
-        logger.info("start");
+        Log.info("start");
         routeButton.setDisable(true);
         for (Robot robot : RobotList.getRobotList()) {
             System.out.println(robot.getRoute().list.size());
@@ -78,14 +79,14 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        logger.debug("init");
-        logger.info("Creating Obstacles...");
+        Log.debug("init");
+        Log.info("Creating Obstacles...");
         ObstacleList.init();
-        logger.info("done.");
+        Log.info("done.");
 
-        logger.info("Map init...");
+        Log.info("Map init...");
         MapHolder.INSTANCE.init();
-        logger.info("done.");
+        Log.info("done.");
 
         //GoalList.goalList.add(new Goal(500,500));
 
@@ -102,5 +103,10 @@ public class Controller implements Initializable {
     public void stop() {
         if (renderThread != null) renderThread.stopThread();
         Platform.exit();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
+        logArea.appendText(propertyChangeEvent.getNewValue().toString());
     }
 }

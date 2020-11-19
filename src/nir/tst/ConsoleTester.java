@@ -19,7 +19,7 @@ import nir.model.global.GlobalVariables;
 import nir.model.map.Cargo;
 import nir.model.map.MapHolder;
 import nir.util.CoordinateUtil;
-import org.apache.log4j.Logger;
+import nir.util.logging.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +28,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class ConsoleTester {
-    final static Logger logger = Logger.getLogger(ConsoleTester.class);
 
     private void init(){
-        logger.debug("init");
-        logger.info("Creating Obstacles...");
+        Log.debug("init");
+        Log.info("Creating Obstacles...");
         ObstacleList.init();
-        logger.info("done.");
-        logger.info("Map init...");
+        Log.info("done.");
+        Log.info("Map init...");
         MapHolder.INSTANCE.init();
-        logger.info("done.");
+        Log.info("done.");
     }
 
     private void testInit(){
@@ -86,63 +85,63 @@ public class ConsoleTester {
     }
 
     private void tst1(){
-        logger.info("Test for 1 robot; 1 to 10 capacity...");
+        Log.info("Test for 1 robot; 1 to 10 capacity...");
         List<Long> list1 = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
-            logger.info("Starting for " + i + "capacity");
+            Log.info("Starting for " + i + "capacity");
             Long res = testTime(10,1,i,10,5);
-            logger.info("Done");
+            Log.info("Done");
             list1.add(res);
         }
-        logger.info("All:");
+        Log.info("All:");
         for (Long v : list1) {
-            logger.info(v);
+            Log.info(v);
         }
         showChart("1 robot; 1 to 10 capacity", list1);
     }
     private void tst2(){
-        logger.info("Test for 1 capacity; 1 to 10 robot...");
+        Log.info("Test for 1 capacity; 1 to 10 robot...");
         List<Long> list = new ArrayList<>();
         for (int i = 1; i < 11; i++) {
-            logger.info("Starting for " + i + "robots");
+            Log.info("Starting for " + i + "robots");
             Long res = testTime(10,i,1,10,5);
-            logger.info("Done");
+            Log.info("Done");
             list.add(res);
         }
-        logger.info("All:");
+        Log.info("All:");
         for (Long v : list) {
-            logger.info(v);
+            Log.info(v);
         }
 
         showChart("1 capacity; 1 to 10 robots", list);
     }
     private void tst3(){
-        logger.info("Test for 5 robot; 2 capacity, 1 to 5 agent...");
+        Log.info("Test for 5 robot; 2 capacity, 1 to 5 agent...");
         List<Long> list = new ArrayList<>();
         for (int i = 1; i < 6; i++) {
-            logger.info("Starting for " + i + "agent");
+            Log.info("Starting for " + i + "agent");
             Long res = testTime(10,5,2,10,i);
-            logger.info("Done");
+            Log.info("Done");
             list.add(res);
         }
-        logger.info("All:");
+        Log.info("All:");
         for (Long v : list) {
-            logger.info(v);
+            Log.info(v);
         }
         showChart("5 robot; 2 capacity, 1 to 5 agent", list);
     }
     private void tst4(){
-        logger.info("Test for 2 capacity; 5 robots, 5 agents, 2 to 20 iterations...");
+        Log.info("Test for 2 capacity; 5 robots, 5 agents, 2 to 20 iterations...");
         List<Long> list = new ArrayList<>();
         for (int i = 2; i < 21; i+=2) {
-            logger.info("Starting for " + i + "iterations");
+            Log.info("Starting for " + i + "iterations");
             Long res = testTime(10,5,2,i,5);
-            logger.info("Done");
+            Log.info("Done");
             list.add(res);
         }
-        logger.info("All:");
+        Log.info("All:");
         for (Long v : list) {
-            logger.info(v);
+            Log.info(v);
         }
         showChart("2 capacity; 5 robots, 5 agents, 2 to 20 iterations", list);
     }
@@ -186,38 +185,38 @@ public class ConsoleTester {
     }
 
     public void testFixTime(long time, int maxRobots){
-        logger.info("Test for " + time/1000 + "s...");
-        logger.info("max robots: " + maxRobots);
+        Log.info("Test for " + time/1000 + "s...");
+        Log.info("max robots: " + maxRobots);
 
         List<Long> list = new ArrayList<>();
         for (int i = 1; i < maxRobots + 1; i++) {
-            logger.info("Starting for " + i + "robots...");
+            Log.info("Starting for " + i + "robots...");
             Long res = testTime(25,i,1,10,5);
             list.add(res);
-            logger.info("Done");
-            logger.info("Result: " + res/1000 + "  Limit time " + time/1000);
+            Log.info("Done");
+            Log.info("Result: " + res/1000 + "  Limit time " + time/1000);
             if (res < time){
-                logger.info("Robots number: "+ i);
+                Log.info("Robots number: "+ i);
                 showChart("25 cargoes, " + i + " robots" , list);
                 break;
             }
         }
-        logger.info("Max number of robots reached:");
+        Log.info("Max number of robots reached:");
         for (Long v : list) {
-            logger.info(v);
+            Log.info(v);
         }
         showChart("25 cargoes, 25 robots", list);
     }
     public void testFixRobot(int tries ,int numberRobots){
-        logger.info("Test for fixed number of robots...");
-        logger.info("Number robots: " + numberRobots);
-        logger.info("Number tries: " + tries);
+        Log.info("Test for fixed number of robots...");
+        Log.info("Number robots: " + numberRobots);
+        Log.info("Number tries: " + tries);
         Long min = Long.MAX_VALUE;
         int best = 0;
         List<Long> list = new ArrayList<>();
         List<List<Robot>> robotList = new ArrayList<>();
         for (int i = 0; i < tries; i++) {
-            logger.info(i + " try...");
+            Log.info(i + " try...");
             List<Robot> listRobot = generateRandRobots(numberRobots);
             robotList.add(listRobot);
             Long res = testRobot(25,listRobot,1,10,5);
@@ -226,12 +225,12 @@ public class ConsoleTester {
                 min = res;
             }
             list.add(res);
-            logger.info("Done");
-            logger.info("Result: " + res/1000);
+            Log.info("Done");
+            Log.info("Result: " + res/1000);
         }
-        logger.info("All tries done:");
+        Log.info("All tries done:");
         for (Long v : list) {
-            logger.info(v);
+            Log.info(v);
         }
         showChart("25 cargoes," + numberRobots + " robots", list);
         showMap(robotList.get(best));

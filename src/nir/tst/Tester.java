@@ -11,7 +11,7 @@ import nir.model.Route;
 import nir.model.global.GlobalVariables;
 import nir.model.map.Cargo;
 import nir.threads.RobotMoveThread;
-import org.apache.log4j.Logger;
+import nir.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.*;
@@ -21,7 +21,6 @@ import java.util.concurrent.FutureTask;
 
 public class Tester implements Runnable, Callable<Long> {
 
-    final static Logger logger = Logger.getLogger(Tester.class);
 
     private Map<Cargo, Boolean> cargoInRoute = new HashMap<>();
     private Map<Robot, Coordinate> points = new HashMap<>();
@@ -58,7 +57,7 @@ public class Tester implements Runnable, Callable<Long> {
                 addRoute(robot,res);
             }
         }
-        logger.info("Routing is done");
+        Log.info("Routing is done");
     }
 
     private void clean() {
@@ -80,7 +79,7 @@ public class Tester implements Runnable, Callable<Long> {
         runRobots();
         after = System.currentTimeMillis();
         time = after - before;
-        logger.info("Time for all: " + time);
+        Log.info("Time for all: " + time);
     }
 
     private void runRobots() {
@@ -140,7 +139,7 @@ public class Tester implements Runnable, Callable<Long> {
                 return route;
             }
             default: {
-                logger.error("No such type!");
+                Log.error("No such type!");
                 return null;
             }
         }
@@ -242,9 +241,9 @@ public class Tester implements Runnable, Callable<Long> {
     public Long call() throws Exception {
         long time = 0, before, after;
         before = System.currentTimeMillis();
-        logger.info("Running robots...");
+        Log.info("Running robots...");
         runRobots();
-        logger.info("Done");
+        Log.info("Done");
         after = System.currentTimeMillis();
         time = after - before;
         return time;

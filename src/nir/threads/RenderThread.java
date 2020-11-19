@@ -15,13 +15,12 @@ import nir.model.Obstacle;
 import nir.model.Robot;
 import nir.model.map.Cargo;
 import nir.model.map.MapHolder;
-import org.apache.log4j.Logger;
+import nir.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
 
 public class RenderThread extends Thread {
-    final static Logger logger = Logger.getLogger(RenderThread.class);
     Image robotImage = new Image("file:robot.jpg");
     Image levelMapImage = new Image("file:levelmap2.jpg");
     Image goalImage = new Image("file:resources\\star.png");
@@ -53,7 +52,7 @@ public class RenderThread extends Thread {
     @Override
     public void run() {
         isRun = true;
-        logger.info("Render thread is started...");
+        Log.info("Render thread is started...");
         drawMapCanvas();
         while (isRun) {
             clear(robotGC);
@@ -66,7 +65,7 @@ public class RenderThread extends Thread {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                logger.error(e.getMessage());
+                Log.error(e.getMessage());
             }
         }
     }
@@ -139,7 +138,7 @@ public class RenderThread extends Thread {
 
     public void stopThread() {
         isRun = false;
-        logger.info("Render thread stopped.");
+        Log.info("Render thread stopped.");
         //System.out.println(isRun);
     }
 

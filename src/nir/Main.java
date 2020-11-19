@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nir.controller.Controller;
-import nir.tst.ConsoleTester;
+import nir.util.logging.LogString;
 import org.apache.log4j.Logger;
 
 public class Main extends Application {
@@ -25,13 +25,15 @@ public class Main extends Application {
             controller.stop();
         });
         primaryStage.show();
+
+        LogString.addPropertyChangeListener(controller);
     }
 
     public static void main(String[] args) {
-//        launch(args);
-        ConsoleTester tester = new ConsoleTester();
-        tester.testTime();
+        launch(args);
+//        ConsoleTester tester = new ConsoleTester();
+//        tester.testTime();
 
-        //System.exit(0);
+        System.exit(0);
     }
 }

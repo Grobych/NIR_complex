@@ -1,8 +1,27 @@
 package nir.model.global;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 public class GlobalVariables {
     private static GlobalVariables instanse = new GlobalVariables();
+    public ObservableList<Variable> list = FXCollections.observableArrayList();
 
+    public GlobalVariables(){
+        this.list.add(new Variable("numberRobots",10d));
+        this.list.add(new Variable("robotCapasity",1d));
+        this.list.add(new Variable("agentsNumber",10d));
+        this.list.add(new Variable("iterations",100d));
+
+        this.list.add(new Variable("phInit",1d));
+        this.list.add(new Variable("phThreshold",0.3d));
+        this.list.add(new Variable("phEx",16000d));
+        this.list.add(new Variable("movingDist",20d));
+        this.list.add(new Variable("movedCoordCoef",15d));
+        this.list.add(new Variable("goal",0.3d));
+        this.list.add(new Variable("ph",1d));
+        this.list.add(new Variable("rand",1d));
+    }
     public static GlobalVariables getInstance(){
         return instanse;
     }

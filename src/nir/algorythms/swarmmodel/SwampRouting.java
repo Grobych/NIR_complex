@@ -4,11 +4,10 @@ import nir.list.ObstacleList;
 import nir.model.Route;
 import nir.model.global.GlobalVariables;
 import nir.model.map.MapHolder;
-import nir.tst.ConsoleTester;
 import nir.util.Intersection;
+import nir.util.logging.Log;
 import nir.util.RouteUtil;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
-import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.ArrayList;
@@ -19,9 +18,6 @@ import java.util.concurrent.Callable;
 import static nir.util.RouteUtil.calculateRouteLenght;
 
 public class SwampRouting implements Runnable , Callable<Route> {
-
-    final static Logger logger = Logger.getLogger(ConsoleTester.class);
-
 
     double g = Double.MAX_VALUE;
     RobotParticle gParticle;
@@ -34,7 +30,7 @@ public class SwampRouting implements Runnable , Callable<Route> {
     }
 
     public Route getRoute(Coordinate start, Coordinate end){
-        logger.info("Generate route from "+ start + "to " + end);
+        Log.info("Generate route from "+ start + "to " + end);
         routes.clear();
         generateAgents(start);
         gParticle = ParticlesList.get(0);
@@ -55,7 +51,7 @@ public class SwampRouting implements Runnable , Callable<Route> {
                 // TODO !!!
             }
         }
-        logger.info("Done");
+        Log.info("Done");
         return new Route(gParticle.getMovedRoute());   //bestRoute(ParticlesList.list);
     }
 

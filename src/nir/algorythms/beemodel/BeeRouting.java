@@ -5,11 +5,11 @@ import nir.list.ObstacleList;
 import nir.model.Route;
 import nir.model.global.GlobalVariables;
 import nir.util.Intersection;
+import nir.util.logging.Log;
 import nir.util.RouteUtil;
 import nir.util.SortByRouteLenght;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
-import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.ArrayList;
@@ -19,8 +19,6 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 public class BeeRouting implements Callable<Route>  {
-
-    final static Logger logger = Logger.getLogger(BeeRouting.class);
 
     private int agentNumber, beeNumber;
     private int iterations;
@@ -36,7 +34,7 @@ public class BeeRouting implements Callable<Route>  {
     }
 
     public Route getRoute(Coordinate start, Coordinate end){
-        logger.info("Generate route from "+ start + "to " + end);
+        Log.info("Generate route from "+ start + "to " + end);
         routes.clear();
 
         generateBees(agentNumber, beeNumber);
@@ -57,7 +55,7 @@ public class BeeRouting implements Callable<Route>  {
             }
         }
 
-        logger.info("Done");
+        Log.info("Done");
         Collections.sort(routes, new SortByRouteLenght());
         return routes.get(0);
     }

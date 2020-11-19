@@ -2,13 +2,12 @@ package nir.threads;
 
 import nir.model.Robot;
 import nir.model.Route;
-import org.apache.log4j.Logger;
+import nir.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.concurrent.Callable;
 
 public class RobotMoveThread implements Callable<Long>, Runnable {
-    final static Logger logger = Logger.getLogger(RobotMoveThread.class);
 
 
     private Robot robot;
@@ -46,6 +45,6 @@ public class RobotMoveThread implements Callable<Long>, Runnable {
         if (onRoute) robot.moveRoute();
         else robot.move(coord);
         long after = System.currentTimeMillis();
-        logger.info("robot "+ robot + " time: " + (after - before));
+        Log.info("robot "+ robot + " time: " + (after - before));
     }
 }

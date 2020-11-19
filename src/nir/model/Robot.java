@@ -6,14 +6,11 @@ import nir.model.map.Cargo;
 import nir.model.map.MapHolder;
 import nir.util.Intersection;
 import nir.util.Mat;
-import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.Random;
 
 public class Robot extends AbstractObject implements Movable {
-
-    final static Logger logger = Logger.getLogger(Robot.class);
 
     protected int speed = 10;
     protected double rotation;

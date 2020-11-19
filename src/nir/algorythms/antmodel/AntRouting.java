@@ -4,6 +4,7 @@ import nir.list.RouteList;
 import nir.model.Route;
 import nir.model.map.MapHolder;
 import nir.threads.AntAgentThread;
+import nir.util.logging.Log;
 import nir.util.RouteUtil;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
@@ -115,7 +116,7 @@ public class AntRouting implements Callable<Route> {
             }
             AgentChecker.reset();
         }
-        System.out.println("Step from " + start + " to " + goal + " done");
+        Log.debug("Step from " + start + " to " + goal + " done");
         result = routeList.getBestRoute();
         result.add(goal);
         return result;
@@ -208,13 +209,13 @@ public class AntRouting implements Callable<Route> {
         int y2 = y1 + (int) v[1];
         Coordinate c = new Coordinate(x2,y2);
         int delta = MapHolder.INSTANCE.getLevelMap().getLineLevelUpping(agent.getPosition(), c);
-//        System.out.println("delta: "+delta);
-//        System.out.println("before: "+v[0]+" "+v[1]);
+//        Log.debug("delta: "+delta);
+//        Log.debug("before: "+v[0]+" "+v[1]);
         if (delta > 5) {
             v[0] = v[0] * (6d / delta);
             v[1] = v[1] * (6d / delta); //TODO: choose different coef
         }
-//        System.out.println("after: "+v[0]+" "+v[1]);
+//        Log.debug("after: "+v[0]+" "+v[1]);
         return v;
     }
 
