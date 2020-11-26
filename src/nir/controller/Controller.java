@@ -11,6 +11,7 @@ import nir.list.ObstacleList;
 import nir.list.RobotList;
 import nir.model.Robot;
 import nir.model.global.GlobalVariables;
+import nir.model.global.VariablesFileLoader;
 import nir.model.map.MapHolder;
 import nir.threads.RenderThread;
 import nir.tst.TestType;
@@ -42,6 +43,10 @@ public class Controller implements Initializable, PropertyChangeListener {
     public static boolean initReady, routingReady;
 
 
+    @FXML
+    public void getRouteButtonClick(){
+
+    }
     @FXML
     public void partButtonClick(){
         SwampRouting swampRouting = new SwampRouting(new Coordinate(200,600), new Coordinate(700,200));
@@ -101,6 +106,7 @@ public class Controller implements Initializable, PropertyChangeListener {
 
 
     public void stop() {
+        VariablesFileLoader.save();
         if (renderThread != null) renderThread.stopThread();
         Platform.exit();
     }

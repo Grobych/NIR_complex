@@ -1,1 +1,0 @@
-{"numberRobots":2,"robotCapasity":1,"agentsNumber":5,"iterations":10,"phInit":1.0,"phThreshold":0.3,"phEx":16000.0,"movingDist":20.0,"movedCoordCoef":15.0,"goal":0.3,"ph":1.0,"rand":1.0}

@@ -21,6 +21,13 @@ public class GlobalVariables {
         this.list.add(new Variable("goal",0.3d));
         this.list.add(new Variable("ph",1d));
         this.list.add(new Variable("rand",1d));
+
+        this.list.add(new Variable("toRCoef", 0.8));
+        this.list.add(new Variable("toGCoef", 0.2));
+        this.list.add(new Variable("steps", 300d));
+
+        this.list.add(new Variable("beeAgentNumber", 5d));
+        this.list.add(new Variable("beeNumber", 10d));
     }
     public static GlobalVariables getInstance(){
         return instanse;
