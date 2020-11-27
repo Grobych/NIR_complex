@@ -9,6 +9,7 @@ import nir.model.Robot;
 import nir.model.RobotCargo;
 import nir.model.Route;
 import nir.model.global.GlobalVariables;
+import nir.model.global.VariablesLoader;
 import nir.model.map.Cargo;
 import nir.threads.RobotMoveThread;
 import nir.util.logging.Log;
@@ -108,31 +109,21 @@ public class Tester implements Runnable, Callable<Long> {
     private Route getRouteTo(Coordinate start, Coordinate goal, TestType type) throws ExecutionException, InterruptedException {
         switch (type){
             case ANT: {
-                AntRouting routing = new AntRouting(
-                        start,
-                        goal,
-                        GlobalVariables.getInstance().iterations,
-                        GlobalVariables.getInstance().agentsNumber,
-                        GlobalVariables.getInstance().phInit);
-                routing.setParams(
-                        GlobalVariables.getInstance().goal,
-                        GlobalVariables.getInstance().ph,
-                        GlobalVariables.getInstance().rand);
-
+                AntRouting routing = new AntRouting(start,goal, VariablesLoader.get(GlobalVariables.getInstance().antParams));
                 FutureTask<Route> future = new FutureTask<>(routing);
                 new Thread(future).start();
                 Route route = future.get();
                 return route;
             }
             case PART: {
-                SwampRouting routing = new SwampRouting(start,goal); // TODO: add params
+                SwampRouting routing = new SwampRouting(start,goal,VariablesLoader.get(GlobalVariables.getInstance().swampParams)); // TODO: add params
                 FutureTask<Route> future = new FutureTask<>(routing);
                 new Thread(future).start();
                 Route route = future.get();
                 return route;
             }
             case BEE: {
-                BeeRouting routing = new BeeRouting(5,5,5,start,goal);
+                BeeRouting routing = new BeeRouting(start,goal,VariablesLoader.get(GlobalVariables.getInstance().beeParams));
                 FutureTask<Route> future = new FutureTask<>(routing);
                 new Thread(future).start();
                 Route route = future.get();

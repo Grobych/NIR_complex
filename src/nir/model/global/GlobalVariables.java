@@ -6,6 +6,34 @@ import javafx.collections.ObservableList;
 public class GlobalVariables {
     private static GlobalVariables instanse = new GlobalVariables();
     public ObservableList<Variable> list = FXCollections.observableArrayList();
+    public String antParams[] = {
+            "numberRobots",
+            "agentsNumber",
+            "iterations",
+            "phInit",
+            "phThreshold",
+            "phEx",
+            "movingDist",
+            "movedCoordCoef",
+            "goal",
+            "ph",
+            "rand"};
+    public String swampParams[] = {
+            "numberRobots",
+            "agentsNumber",
+            "iterations",
+            "toRCoef",
+            "toGCoef",
+            "steps",
+            "movingDist"
+    };
+    public String beeParams[] = {
+            "numberRobots",
+            "agentNumber",
+            "beeNumber",
+            "iterations",
+            "movingDist"
+    };
 
     public GlobalVariables(){
         this.list.add(new Variable("numberRobots",10d));
@@ -28,6 +56,8 @@ public class GlobalVariables {
 
         this.list.add(new Variable("beeAgentNumber", 5d));
         this.list.add(new Variable("beeNumber", 10d));
+
+
     }
     public static GlobalVariables getInstance(){
         return instanse;

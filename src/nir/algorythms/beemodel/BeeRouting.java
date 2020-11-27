@@ -4,7 +4,6 @@ import nir.algorythms.BaseRouting;
 import nir.algorythms.antmodel.RobotAgent;
 import nir.list.ObstacleList;
 import nir.model.Route;
-import nir.model.global.GlobalVariables;
 import nir.model.global.Variable;
 import nir.util.Intersection;
 import nir.util.RouteUtil;
@@ -85,8 +84,8 @@ public class BeeRouting extends BaseRouting {
         agent.redirect(start);
         agent.clearMovedRoute();
         int i = 0;
-        double dist = GlobalVariables.getInstance().movingDist;
-        while (agent.getPosition().distance(end) > GlobalVariables.getInstance().movingDist){
+        double dist = params.get("movingDist");
+        while (agent.getPosition().distance(end) > params.get("movingDist")){
             Coordinate newPos;
             i++;
 //            System.out.println(i);
