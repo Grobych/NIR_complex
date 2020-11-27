@@ -20,13 +20,8 @@ import java.util.Random;
 public class AntRouting extends BaseRouting {
     private volatile Route result;
     public RouteList routeList = new RouteList();
-
     public static List<RobotAgent> agents;
-
     private Pheromone pheromone = new Pheromone();
-
-    private double gC, phC, rC;
-
     protected static boolean goalTaken = false;
 
     public static void setGoalTaken(boolean goalTaken) {
@@ -52,12 +47,6 @@ public class AntRouting extends BaseRouting {
     public AntRouting(Coordinate start, Coordinate end, List<Variable> variableList) {
         super(start,end,variableList);
         createAgents();
-    }
-
-    public void setParams(double goal, double ph, double rand) {
-        this.gC = goal;
-        this.phC = ph;
-        this.rC = rand;
     }
 
     public void stop() {
@@ -173,9 +162,9 @@ public class AntRouting extends BaseRouting {
         double d2 = MapHolder.INSTANCE.getLevelMap().getLineLevelUpping(agent.getPosition(),new Coordinate(agent.getPosition().x + v2.getX(), agent.getPosition().y + v2.getY()));
         double d3 = MapHolder.INSTANCE.getLevelMap().getLineLevelUpping(agent.getPosition(),new Coordinate(agent.getPosition().x + v3.getX(), agent.getPosition().y + v3.getY()));
 
-        pairs.add(new Pair<>(v1,gC * 1/(d1+1)));
-        pairs.add(new Pair<>(v2,phC * 1/(d2 + 1)));
-        pairs.add(new Pair<>(v3,rC * 1/(d3 + 1)));
+        pairs.add(new Pair<>(v1,params.get("gC") * 1/(d1+1)));
+        pairs.add(new Pair<>(v2, params.get("phC") * 1/(d2 + 1)));
+        pairs.add(new Pair<>(v3, params.get("rC") * 1/(d3 + 1)));
 
         EnumeratedDistribution enumeratedDistribution = new EnumeratedDistribution<Vector2D>(pairs);
         Vector2D res = (Vector2D) enumeratedDistribution.sample();
@@ -191,6 +180,10 @@ public class AntRouting extends BaseRouting {
 
     private Coordinate calculatePoint(double[] v1, double[] v2, double[] v3, RobotAgent agent) {
         double[] resV = new double[2];
+        double gC = params.get("gC");
+        double phC = params.get("phC");
+        double rC = params.get("rC");
+
         resV[0] = v1[0] * gC + v2[0] * phC + v3[0] * rC;
         resV[1] = v1[1] * gC + v2[1] * phC + v3[1] * rC;
         Coordinate result = new Coordinate(agent.getPosition().x + resV[0], agent.getPosition().y + resV[1]);
