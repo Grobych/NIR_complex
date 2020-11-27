@@ -1,13 +1,15 @@
 package nir.algorythms.beemodel;
 
+import nir.algorythms.BaseRouting;
 import nir.algorythms.antmodel.RobotAgent;
 import nir.list.ObstacleList;
 import nir.model.Route;
 import nir.model.global.GlobalVariables;
+import nir.model.global.Variable;
 import nir.util.Intersection;
-import nir.util.logging.Log;
 import nir.util.RouteUtil;
 import nir.util.SortByRouteLenght;
+import nir.util.logging.Log;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.util.Pair;
 import org.locationtech.jts.geom.Coordinate;
@@ -16,26 +18,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
-public class BeeRouting implements Callable<Route>  {
+public class BeeRouting extends BaseRouting {
 
-    private int agentNumber, beeNumber;
-    private int iterations;
-    private Coordinate start,end;
     private List<Route> routes = new ArrayList<>();
 
-    public BeeRouting(int agentNumber, int beeNumber, int iterations, Coordinate start, Coordinate end){
-        this.agentNumber = agentNumber;
-        this.beeNumber = beeNumber;
-        this.iterations = iterations;
-        this.start = start;
-        this.end = end;
+    public BeeRouting(Coordinate start, Coordinate end, List<Variable> variableList){
+        super(start, end, variableList);
     }
 
     public Route getRoute(Coordinate start, Coordinate end){
         Log.info("Generate route from "+ start + "to " + end);
         routes.clear();
+
+        int agentNumber = params.get("agentNumber").intValue();
+        int beeNumber = params.get("beeNumber").intValue();
+        int iterations = params.get("iterations").intValue();
 
         generateBees(agentNumber, beeNumber);
 
@@ -77,7 +75,7 @@ public class BeeRouting implements Callable<Route>  {
     private List<Route> generateRandomRoutes() {
         List<Route> res = new ArrayList<>();
         for (RobotAgent agent : BeeList.agents) {
-            res.add(randRoute(agent, start, end));
+            res.add(randRoute(agent, this.start, this.end));
             System.out.println(agent + "done");
         }
         return res;

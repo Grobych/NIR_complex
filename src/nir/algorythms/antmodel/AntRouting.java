@@ -1,11 +1,13 @@
 package nir.algorythms.antmodel;
 
+import nir.algorythms.BaseRouting;
 import nir.list.RouteList;
 import nir.model.Route;
+import nir.model.global.Variable;
 import nir.model.map.MapHolder;
 import nir.threads.AntAgentThread;
-import nir.util.logging.Log;
 import nir.util.RouteUtil;
+import nir.util.logging.Log;
 import org.apache.commons.math3.distribution.EnumeratedDistribution;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.apache.commons.math3.util.Pair;
@@ -14,21 +16,13 @@ import org.locationtech.jts.geom.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
-public class AntRouting implements Callable<Route> {
+public class AntRouting extends BaseRouting {
     private volatile Route result;
     public RouteList routeList = new RouteList();
 
     public static List<RobotAgent> agents;
-    public Coordinate start, goal;
-    private int iterationNumber, currentIteration;
-    private int agentsNumber;
-    private double phInit = 1;
-    private double phThreshold = 0.3;
-    public double phEx = 16000;
-    private double movingDist = 20;
-    private double movedCoordCoef = 15;
+
     private Pheromone pheromone = new Pheromone();
 
     private double gC, phC, rC;
@@ -44,23 +38,19 @@ public class AntRouting implements Callable<Route> {
     }
 
     public Coordinate getStart() {
-        return this.start;
+        return start;
     }
 
     public Coordinate getGoal() {
-        return goal;
+        return end;
     }
 
     public Route getResult() {
         return result;
     }
 
-    public AntRouting(Coordinate start, Coordinate goal, int iterations, int agentsNumber, double phInit) {
-        this.start = start;
-        this.goal = goal;
-        this.iterationNumber = iterations;
-        this.agentsNumber = agentsNumber;
-        this.phInit = phInit;
+    public AntRouting(Coordinate start, Coordinate end, List<Variable> variableList) {
+        super(start,end,variableList);
         createAgents();
     }
 
@@ -78,6 +68,11 @@ public class AntRouting implements Callable<Route> {
 
     @Override
     public Route call() {
+        int agentsNumber = params.get("agentsNumber").intValue();
+        int iterationNumber = params.get("iterationNumber").intValue();
+        double phEx = params.get("phEx");
+        double phThreshold = params.get("phThreshold");
+
         AgentChecker.setN(agentsNumber);
         for (int i = 0; i < iterationNumber; i++) {
             List<Thread> threads = new ArrayList<>();
@@ -116,9 +111,9 @@ public class AntRouting implements Callable<Route> {
             }
             AgentChecker.reset();
         }
-        Log.debug("Step from " + start + " to " + goal + " done");
+        Log.debug("Step from " + start + " to " + end + " done");
         result = routeList.getBestRoute();
-        result.add(goal);
+        result.add(end);
         return result;
     }
 
@@ -147,7 +142,7 @@ public class AntRouting implements Callable<Route> {
     }
 
     public boolean goalTaken(RobotAgent agent) {
-        return goal.distance(agent.getPosition()) < 20;
+        return end.distance(agent.getPosition()) < 20;
     }
 
     public void redirect(RobotAgent agent, Coordinate start) {
@@ -189,7 +184,7 @@ public class AntRouting implements Callable<Route> {
 
     private boolean checkIsInRoute(Coordinate res, List<Coordinate> movedRoute) {
         for (Coordinate c : movedRoute) {
-            if (c.distance(res) < movedCoordCoef) return true;
+            if (c.distance(res) < params.get("movedCoordCoef")) return true;
         }
         return false;
     }
@@ -231,8 +226,8 @@ public class AntRouting implements Callable<Route> {
     private double[] getRotation(RobotAgent agent, Coordinate goal) {
         Coordinate r = agent.getPosition();
         double[] vector = new double[2];
-        vector[0] = (goal.x - r.x) / r.distance(goal) * movingDist ;
-        vector[1] = (goal.y - r.y) / r.distance(goal) * movingDist ;
+        vector[0] = (goal.x - r.x) / r.distance(goal) * params.get("movingDist") ;
+        vector[1] = (goal.y - r.y) / r.distance(goal) * params.get("movingDist") ;
         return vector;
     }
 
@@ -246,7 +241,7 @@ public class AntRouting implements Callable<Route> {
         }
         for (Coordinate coordinate : pheromone.key()) {
             double d = agent.getPosition().distance(coordinate);
-            if (d < movingDist) {
+            if (d < params.get("movingDist")) {
                 temp[0] = coordinate.x - agent.getPosition().x;
                 temp[1] = coordinate.y - agent.getPosition().y;
                 vector[0] += temp[0] * pheromone.get(coordinate) / 2 /d;
@@ -260,14 +255,14 @@ public class AntRouting implements Callable<Route> {
 
     private double[] getRotation() {
         double[] vector = new double[2];
-        vector[0] = new Random().nextDouble() * movingDist * 2 - movingDist;
-        vector[1] = new Random().nextDouble() * movingDist * 2 - movingDist;
+        vector[0] = new Random().nextDouble() * params.get("movingDist") * 2 - params.get("movingDist");
+        vector[1] = new Random().nextDouble() * params.get("movingDist") * 2 - params.get("movingDist");
         return vector;
     }
 
     private void createAgents() {
         agents = new ArrayList<>();
-        for (int i = 0; i < agentsNumber; i++) {
+        for (int i = 0; i < params.get("agentsNumber").intValue(); i++) {
             agents.add(new RobotAgent((int) start.x, (int) start.y));
         }
     }
@@ -284,10 +279,10 @@ public class AntRouting implements Callable<Route> {
     synchronized public void putPheromone(RobotAgent agent) {
         Coordinate coordinate = agent.getPosition();
         if (pheromone.contains(coordinate)) {
-            Double val = pheromone.get(coordinate) + phInit;
+            Double val = pheromone.get(coordinate) + params.get("phInit");
             pheromone.put(coordinate, val);
         } else {
-            pheromone.put(coordinate, phInit);
+            pheromone.put(coordinate, params.get("phInit"));
         }
     }
 }

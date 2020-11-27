@@ -1,32 +1,30 @@
 package nir.algorythms.swarmmodel;
 
+import nir.algorythms.BaseRouting;
 import nir.list.ObstacleList;
 import nir.model.Route;
-import nir.model.global.GlobalVariables;
+import nir.model.global.Variable;
 import nir.model.map.MapHolder;
 import nir.util.Intersection;
-import nir.util.logging.Log;
 import nir.util.RouteUtil;
+import nir.util.logging.Log;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
 
 import static nir.util.RouteUtil.calculateRouteLenght;
 
-public class SwampRouting implements Runnable , Callable<Route> {
+public class SwampRouting extends BaseRouting {
 
     double g = Double.MAX_VALUE;
     RobotParticle gParticle;
-    private Coordinate start,end;
     private List<Route> routes = new ArrayList<>();
 
-    public SwampRouting(Coordinate start, Coordinate end){
-        this.start = start;
-        this.end = end;
+    public SwampRouting(Coordinate start, Coordinate end, List<Variable> variableList){
+        super(start, end, variableList);
     }
 
     public Route getRoute(Coordinate start, Coordinate end){
@@ -36,7 +34,7 @@ public class SwampRouting implements Runnable , Callable<Route> {
         gParticle = ParticlesList.get(0);
         g = calculateG(gParticle.getPosition(),end);
         setInitSpeed(ParticlesList.list);
-        int iterations = GlobalVariables.getInstance().steps;
+        int iterations = params.getInt("steps");
         int i = 0;
         while (true){
             i++;
@@ -112,7 +110,7 @@ public class SwampRouting implements Runnable , Callable<Route> {
     }
 
     private Vector2D getVector2DRand(Coordinate from, Coordinate to){
-        double movingDist = GlobalVariables.getInstance().movingDist;
+        double movingDist = params.get("movingDist");
         double v1 = (to.x - from.x) / from.distance(to) * movingDist ;
         double v2 = (to.y - from.y) / from.distance(to) * movingDist ;
         Vector2D toG = new Vector2D(v1,v2);
@@ -121,8 +119,8 @@ public class SwampRouting implements Runnable , Callable<Route> {
         double r2 = new Random().nextInt((int)movingDist * 2) - movingDist;
         Vector2D toR = new Vector2D(r1,r2);
 
-        double gCoef = GlobalVariables.getInstance().toGCoef;
-        double rCoef = GlobalVariables.getInstance().toRCoef;
+        double gCoef = params.get("toGCoef");
+        double rCoef = params.get("toRCoef");
         return new Vector2D(toG.getX() * gCoef + toR.getX() * rCoef, toG.getY() * gCoef + toR.getY() * rCoef);
     }
 
@@ -144,7 +142,7 @@ public class SwampRouting implements Runnable , Callable<Route> {
     }
 
     private void generateAgents(Coordinate start) {
-        int n = GlobalVariables.getInstance().agentsNumber;
+        int n = params.getInt("agentsNumber");
         ParticlesList.clear();
         for (int i = 0; i < n; i++) {
             ParticlesList.add(new RobotParticle(start));
@@ -152,14 +150,9 @@ public class SwampRouting implements Runnable , Callable<Route> {
     }
 
     @Override
-    public void run() {
-        getRoute(start,end);
-    }
-
-    @Override
     public Route call() throws Exception {
         Route best = new Route();
-        for (int i = 0; i < GlobalVariables.getInstance().iterations; i++) {
+        for (int i = 0; i < params.getInt("iterations"); i++) {
             Route route = getRoute(start,end);
             if (route == null) {
                 System.out.println("null");
@@ -179,15 +172,4 @@ public class SwampRouting implements Runnable , Callable<Route> {
         return best;
     }
 
-//    public void run(){
-//        Route best = new Route();
-//        for (int i = 0; i < tryes; i++) {
-//            Route route = getRoute(start,end);
-//            if (i>0) {
-//                best = checkRoute(best,route);
-//            } else {
-//                best = route;
-//            }
-//        }
-//    }
 }
