@@ -1,6 +1,7 @@
 package nir;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -22,7 +23,7 @@ public class Main extends Application {
         primaryStage.setTitle("NIR");
         primaryStage.setScene(new Scene(root, 1500, 800));
         primaryStage.setOnCloseRequest(event -> {
-            controller.stop();
+            Platform.exit();
         });
         primaryStage.show();
 

@@ -24,7 +24,7 @@ public class AntAgentThread implements Runnable {
     @Override
     public void run() {
         do {
-            Coordinate point = routing.getCoordinate(agent, routing.goal);
+            Coordinate point = routing.getCoordinate(agent, routing.getGoal());
             routing.move(agent, point);
             if (routing.goalTaken(agent)) {
                 agent.setGoalTaken(true);
