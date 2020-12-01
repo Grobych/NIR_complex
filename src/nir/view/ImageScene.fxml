@@ -2,17 +2,20 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ScrollPane?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="nir.controller.ImageController"
             prefHeight="400.0" prefWidth="600.0">
+    <ScrollPane pannable="true" maxWidth="1100" maxHeight="700">
+        <Pane prefHeight="848.0" prefWidth="1211.0" GridPane.columnIndex="0" GridPane.fillHeight="800.0" GridPane.fillWidth="1200.0" GridPane.rowIndex="0">
+            <children>
+                <Canvas fx:id="mapCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
+                <Canvas fx:id="robotCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
+                <Canvas fx:id="utilCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
+                <Canvas fx:id="pheromoneCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
+            </children>
+        </Pane>
+    </ScrollPane>
 
-    <Pane prefHeight="848.0" prefWidth="1211.0" GridPane.columnIndex="0" GridPane.fillHeight="800.0" GridPane.fillWidth="1200.0" GridPane.rowIndex="0">
-        <children>
-            <Canvas fx:id="mapCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
-            <Canvas fx:id="robotCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
-            <Canvas fx:id="utilCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
-            <Canvas fx:id="pheromoneCanvas" height="800.0" layoutX="10.0" layoutY="13.0" width="1200.0" />
-        </children>
-    </Pane>
 </AnchorPane>
