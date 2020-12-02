@@ -19,8 +19,10 @@ import nir.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class RenderThread extends Thread {
+public class RenderThread extends Thread implements Observer {
     Image robotImage = new Image("file:robot.jpg");
     Image levelMapImage = new Image("file:levelmap2.jpg");
     Image goalImage = new Image("file:resources\\star.png");
@@ -154,5 +156,13 @@ public class RenderThread extends Thread {
         rotate(gc, angle, tlpx + image.getWidth() / 2, tlpy + image.getHeight() / 2);
         gc.drawImage(image, tlpx, tlpy);
         gc.restore(); // back to original state (before rotation)
+    }
+
+    @Override
+    public void update(Observable observable, Object o) {
+        Log.debug("loading image");
+        mapGC.clearRect(0,0,levelMapImage.getWidth(),levelMapImage.getHeight());
+        levelMapImage = new Image("file:"+MapHolder.INSTANCE.getImageMap().getFileName());
+        drawMap();
     }
 }

@@ -99,7 +99,7 @@ public class Controller implements Initializable, Closeable, PropertyChangeListe
 
     @Override
     public void propertyChange(PropertyChangeEvent propertyChangeEvent) {
-        logArea.appendText(propertyChangeEvent.getNewValue().toString());
+        logArea.appendText(propertyChangeEvent.getNewValue().toString() + "\n");
     }
 
     @Override

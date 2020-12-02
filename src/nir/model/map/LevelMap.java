@@ -11,8 +11,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class LevelMap {
-    private static final int xSize = 1200;
-    private static final int ySize = 800;
+    private static int xSize = 1200;
+    private static int ySize = 800;
 
     private int[][] levelMap = new int[xSize][ySize];
 
@@ -42,11 +42,17 @@ public class LevelMap {
     }
 
     public LevelMap() {
+        loadMapFromImage("levelmap2.jpg");
+    }
+    public void loadMapFromImage(String fileName){
         try {
-            BufferedImage image = ImageIO.read(new File("levelmap2.jpg"));
+            BufferedImage image = ImageIO.read(new File(fileName));
+            xSize = image.getWidth();
+            ySize = image.getHeight();
             Color[][] colors = MapUtil.loadPixelsFromImage(image);
-            for (int i = 0; i < image.getWidth(); i++) {
-                for (int j = 0; j < image.getHeight(); j++) {
+            levelMap = new int[xSize][ySize];
+            for (int i = 0; i < xSize; i++) {
+                for (int j = 0; j < ySize; j++) {
                     Color pix = colors[i][j];
                     float[] pixel = Color.RGBtoHSB(pix.getRed(), pix.getGreen(), pix.getBlue(), null);
                     float level = (240f - (pixel[0] * 240f));

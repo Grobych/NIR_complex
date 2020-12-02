@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="center" hgap="10" vgap="10" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nir.controller.Controller">
+<GridPane alignment="center" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="nir.controller.Controller">
    <!--<columnConstraints>-->
       <!--<ColumnConstraints minWidth="10.0" prefWidth="800.0" />-->
       <!--<ColumnConstraints minWidth="101.0" prefWidth="200.0" />-->
@@ -32,8 +32,8 @@
       <fx:include source="PropertyTableScene.fxml" GridPane.columnIndex="1" GridPane.rowIndex="0" />
    </children>
    <columnConstraints>
-      <ColumnConstraints maxWidth="1449.0" minWidth="1215.0" prefWidth="1449.0" />
-      <ColumnConstraints maxWidth="595.0" minWidth="361.0" prefWidth="361.0" />
+      <ColumnConstraints prefWidth="1200.0" />
+      <ColumnConstraints prefWidth="300.0" />
    </columnConstraints>
    <rowConstraints>
       <RowConstraints />
