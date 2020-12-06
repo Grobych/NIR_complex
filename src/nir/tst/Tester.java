@@ -1,8 +1,8 @@
 package nir.tst;
 
-import nir.algorythms.antmodel.AntRouting;
-import nir.algorythms.beemodel.BeeRouting;
-import nir.algorythms.swarmmodel.SwampRouting;
+import nir.algorithms.antmodel.AntRouting;
+import nir.algorithms.beemodel.BeeRouting;
+import nir.algorithms.swarmmodel.SwampRouting;
 import nir.list.CargoList;
 import nir.list.RobotList;
 import nir.model.Robot;

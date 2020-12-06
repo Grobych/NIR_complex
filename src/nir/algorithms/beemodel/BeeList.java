@@ -1,6 +1,6 @@
-package nir.algorythms.beemodel;
+package nir.algorithms.beemodel;
 
-import nir.algorythms.antmodel.RobotAgent;
+import nir.algorithms.antmodel.RobotAgent;
 
 import java.util.ArrayList;
 import java.util.List;

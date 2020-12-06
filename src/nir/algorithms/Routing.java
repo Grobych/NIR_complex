@@ -1,4 +1,4 @@
-package nir.algorythms;
+package nir.algorithms;
 
 import nir.model.Route;
 import nir.model.global.Variable;

@@ -1,4 +1,4 @@
-package nir.algorythms;
+package nir.algorithms;
 
 import nir.model.Route;
 import nir.model.global.Variable;
@@ -23,6 +23,7 @@ public class BaseRouting extends Routing implements Callable<Route> {
 
     @Override
     public void initParams(List<Variable> list) {
+        this.params = new VariableList();
         this.params.load(list);
     }
 

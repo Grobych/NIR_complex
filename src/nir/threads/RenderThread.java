@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Paint;
 import javafx.scene.transform.Rotate;
-import nir.algorythms.swarmmodel.RobotParticle;
+import nir.algorithms.swarmmodel.RobotParticle;
+import nir.controller.ImageController;
 import nir.list.CargoList;
 import nir.list.GoalList;
 import nir.list.ObstacleList;
@@ -13,6 +15,7 @@ import nir.list.RobotList;
 import nir.model.Goal;
 import nir.model.Obstacle;
 import nir.model.Robot;
+import nir.model.Route;
 import nir.model.map.Cargo;
 import nir.model.map.MapHolder;
 import nir.util.logging.Log;
@@ -28,8 +31,11 @@ public class RenderThread extends Thread implements Observer {
     Image goalImage = new Image("file:resources\\star.png");
     Image cargoImage = new Image("file:resources\\Box.png");
 
-    GraphicsContext mapGC, robotGC, utilGC;// phGC;
+    GraphicsContext mapGC, robotGC, utilGC, routeGC;// phGC;
     private boolean isRun = false;
+
+    private Route route;
+    Coordinate start, end;
 
     @FXML
     Canvas mapCanvas;
@@ -37,16 +43,20 @@ public class RenderThread extends Thread implements Observer {
     Canvas robotCanvas;
     @FXML
     Canvas utilCanvas;
+    @FXML
+    Canvas routeCanvas;
 //    @FXML
 //    Canvas pheromoneCanvas;
 
-    public void setCanvases(Canvas map, Canvas robot, Canvas util) {
+    public void setCanvases(Canvas map, Canvas robot, Canvas util, Canvas route) {
         this.mapCanvas = map;
         this.robotCanvas = robot;
         this.utilCanvas = util;
+        this.routeCanvas = route;
         mapGC = mapCanvas.getGraphicsContext2D();
         robotGC = robotCanvas.getGraphicsContext2D();
         utilGC = utilCanvas.getGraphicsContext2D();
+        routeGC = routeCanvas.getGraphicsContext2D();
         utilCanvas.toFront();
     }
 
@@ -60,8 +70,10 @@ public class RenderThread extends Thread implements Observer {
             clear(robotGC);
             clear(utilGC);
             //drawGoals();
+            drawStartEnd();
             drawCargos();
             drawRobots();
+            drawSingleRoute();
 //            drawParticles(ParticlesList.list);
 //            drawPheromone();
             try {
@@ -71,6 +83,38 @@ public class RenderThread extends Thread implements Observer {
             }
         }
     }
+
+    private void drawSingleRoute() {
+        Route fromIC = ImageController.route;
+        if (fromIC != null){
+            if (fromIC != this.route){
+                clear(routeGC);
+                drawRoute(fromIC);
+                this.route = fromIC;
+            }
+        }
+    }
+    public void drawRoute(Route route) {
+        //System.out.println(route.list );
+        Coordinate startPoint = route.list.get(0);
+        routeGC.moveTo(startPoint.getX(), startPoint.getY());
+        routeGC.setStroke(Paint.valueOf("#FF0000"));
+        for (Coordinate o : route.list) {
+            double nextX = o.x;
+            double nextY = o.y;
+            routeGC.lineTo(nextX, nextY);
+            routeGC.stroke();
+        }
+        routeGC.setStroke(Paint.valueOf("#000000"));
+    }
+
+    private void drawStartEnd() {
+        Coordinate start = ImageController.start;
+        Coordinate end = ImageController.end;
+        if (start != null) utilGC.drawImage(goalImage, start.x - 10,start.y-10,20,20);
+        if (end != null) utilGC.drawImage(goalImage, end.x - 10,end.y - 10, 20,20);
+    }
+
     private void clear(GraphicsContext gc) {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
     }

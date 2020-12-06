@@ -1,4 +1,4 @@
-package nir.algorythms.antmodel;
+package nir.algorithms.antmodel;
 
 import nir.list.ObstacleList;
 import nir.model.Robot;

@@ -39,7 +39,7 @@ public class GlobalVariables {
         this.list.add(new Variable("numberRobots",10d));
         this.list.add(new Variable("robotCapasity",1d));
         this.list.add(new Variable("agentsNumber",10d));
-        this.list.add(new Variable("iterations",100d));
+        this.list.add(new Variable("iterations",20d));
 
         this.list.add(new Variable("phInit",1d));
         this.list.add(new Variable("phThreshold",0.3d));
@@ -54,7 +54,7 @@ public class GlobalVariables {
         this.list.add(new Variable("toGCoef", 0.2));
         this.list.add(new Variable("steps", 300d));
 
-        this.list.add(new Variable("beeAgentNumber", 5d));
+        this.list.add(new Variable("agentNumber", 5d));
         this.list.add(new Variable("beeNumber", 10d));
 
 

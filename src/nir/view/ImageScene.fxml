@@ -16,11 +16,12 @@
                 <Canvas fx:id="utilCanvas" height="800.0" width="1200.0" />
                 <Canvas fx:id="pheromoneCanvas" height="800.0" width="1200.0" />
                 <Canvas fx:id="mapCanvas" height="800.0" width="1200.0" />
+                <Canvas fx:id="routeCanvas" height="800.0" width="1200.0"/>
             </children>
         </Pane>
     </ScrollPane>
-    <Button fx:id="loadMapButton" text="Load Map" onAction="#loadMapButtonClick"/>
+    <Button fx:id="loadMapButton" text="Load Map" onAction="#loadMapButtonClick" disable="true"/>
     <Button fx:id="setStartPointButton" text="Set Start" onAction="#setStartPointButtonClick"/>
     <Button fx:id="setEndPointButton" text="Set End" onAction="#setEndPointButtonClick"/>
-
+    <Button fx:id="getRouteButton" text="Get single route" onAction="#getRouteButtonClick"/>
 </VBox>

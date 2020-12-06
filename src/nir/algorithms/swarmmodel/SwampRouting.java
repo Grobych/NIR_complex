@@ -1,6 +1,6 @@
-package nir.algorythms.swarmmodel;
+package nir.algorithms.swarmmodel;
 
-import nir.algorythms.BaseRouting;
+import nir.algorithms.BaseRouting;
 import nir.list.ObstacleList;
 import nir.model.Route;
 import nir.model.global.Variable;
@@ -153,6 +153,7 @@ public class SwampRouting extends BaseRouting {
     public Route call() throws Exception {
         Route best = new Route();
         for (int i = 0; i < params.getInt("iterations"); i++) {
+            Log.info("Iteration "+ i);
             Route route = getRoute(start,end);
             if (route == null) {
                 System.out.println("null");

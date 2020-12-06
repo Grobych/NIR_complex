@@ -22,10 +22,11 @@
       <fx:include source="ImageScene.fxml" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
       <VBox prefHeight="200.0" prefWidth="119.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
+            <fx:include source="AlgorithmChooserScene.fxml"/>
             <Button fx:id="initButton" disable="true" mnemonicParsing="false" onAction="#initButtonClick" text="Init" />
             <Button fx:id="routeButton" disable="true" mnemonicParsing="false" onAction="#routeButtonClick" text="Get Routes" />
             <Button fx:id="startButton" disable="true" mnemonicParsing="false" onAction="#startClick" text="Start" />
-            <Button fx:id="partButton" onAction="#partButtonClick" text="particles" />
+<!--            <Button fx:id="partButton" onAction="#partButtonClick" text="particles" />-->
          </children>
       </VBox>
       <TextArea fx:id="logArea" prefHeight="200.0" prefWidth="1200.0" style="-fx-background-color: #AAAAAA;" GridPane.columnIndex="0" GridPane.rowIndex="1" />

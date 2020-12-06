@@ -1,7 +1,7 @@
-package nir.algorythms.beemodel;
+package nir.algorithms.beemodel;
 
-import nir.algorythms.BaseRouting;
-import nir.algorythms.antmodel.RobotAgent;
+import nir.algorithms.BaseRouting;
+import nir.algorithms.antmodel.RobotAgent;
 import nir.list.ObstacleList;
 import nir.model.Route;
 import nir.model.global.Variable;
@@ -29,7 +29,6 @@ public class BeeRouting extends BaseRouting {
     public Route getRoute(Coordinate start, Coordinate end){
         Log.info("Generate route from "+ start + "to " + end);
         routes.clear();
-
         int agentNumber = params.get("agentNumber").intValue();
         int beeNumber = params.get("beeNumber").intValue();
         int iterations = params.get("iterations").intValue();
@@ -37,6 +36,7 @@ public class BeeRouting extends BaseRouting {
         generateBees(agentNumber, beeNumber);
 
         for (int i = 0; i < iterations; i++) {
+            Log.info("Iteration"+i);
             List<Route> randRoutes = generateRandomRoutes();
             routes.addAll(randRoutes);
             Collections.sort(routes, new SortByRouteLenght());

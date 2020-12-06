@@ -1,4 +1,4 @@
-package nir.algorythms.antmodel;
+package nir.algorithms.antmodel;
 
 import org.locationtech.jts.geom.Coordinate;
 

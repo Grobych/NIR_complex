@@ -10,7 +10,6 @@ import nir.list.RobotList;
 import nir.model.Robot;
 import nir.model.global.GlobalVariables;
 import nir.model.global.VariablesFileLoader;
-import nir.tst.TestType;
 import nir.tst.Tester;
 import nir.util.logging.Log;
 
@@ -60,7 +59,7 @@ public class Controller implements Initializable, Closeable, PropertyChangeListe
 
     @FXML
     public void routeButtonClick() throws ExecutionException, InterruptedException {
-        tester.testInit(TestType.BEE);
+        tester.testInit(AlgorithmChooserController.getType());
         startButton.setDisable(false);
         initButton.setDisable(true);
     }
@@ -82,15 +81,7 @@ public class Controller implements Initializable, Closeable, PropertyChangeListe
         ObstacleList.init();
         Log.info("done.");
 
-
-
-        //GoalList.goalList.add(new Goal(500,500));
-
-
-
         initButton.setDisable(false);
-
-//        VariablesLoader.load();
     }
 
 

@@ -1,4 +1,4 @@
-package nir.algorythms.antmodel;
+package nir.algorithms.antmodel;
 
 public class AgentChecker {
     private static int n = 0;

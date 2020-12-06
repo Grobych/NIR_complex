@@ -1,6 +1,6 @@
-package nir.algorythms.swarmmodel;
+package nir.algorithms.swarmmodel;
 
-import nir.algorythms.antmodel.RobotAgent;
+import nir.algorithms.antmodel.RobotAgent;
 import nir.model.global.GlobalVariables;
 import org.locationtech.jts.geom.Coordinate;
 

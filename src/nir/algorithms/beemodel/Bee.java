@@ -1,6 +1,6 @@
-package nir.algorythms.beemodel;
+package nir.algorithms.beemodel;
 
-import nir.algorythms.antmodel.RobotAgent;
+import nir.algorithms.antmodel.RobotAgent;
 import nir.model.Route;
 import nir.model.global.GlobalVariables;
 import org.locationtech.jts.geom.Coordinate;

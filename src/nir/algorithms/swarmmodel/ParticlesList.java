@@ -1,4 +1,4 @@
-package nir.algorythms.swarmmodel;
+package nir.algorithms.swarmmodel;
 
 import java.util.ArrayList;
 import java.util.List;

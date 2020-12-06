@@ -11,6 +11,13 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import nir.algorithms.BaseRouting;
+import nir.algorithms.antmodel.AntRouting;
+import nir.algorithms.beemodel.BeeRouting;
+import nir.algorithms.swarmmodel.SwampRouting;
+import nir.model.Route;
+import nir.model.global.GlobalVariables;
+import nir.model.global.VariablesLoader;
 import nir.model.map.MapHolder;
 import nir.threads.RenderThread;
 import nir.util.logging.Log;
@@ -20,6 +27,8 @@ import javax.xml.ws.WebServiceException;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 public class ImageController implements Initializable, Closeable {
     private RenderThread renderThread;
@@ -27,15 +36,18 @@ public class ImageController implements Initializable, Closeable {
         return this;
     }
     @FXML
-    Canvas mapCanvas, robotCanvas, utilCanvas;
+    Canvas mapCanvas, robotCanvas, utilCanvas, routeCanvas;
     @FXML
-    Button loadMapButton, setStartPointButton, setEndPointButton;
+    Button loadMapButton, setStartPointButton, setEndPointButton, getRouteButton;
     @FXML
     VBox ap;
     @FXML
     Pane pane;
     @FXML
     ScrollPane sp;
+
+    public static Coordinate start, end;
+    public static Route route;
 
     private boolean isStartPointing = false;
     private boolean isEndPointing = false;
@@ -48,10 +60,10 @@ public class ImageController implements Initializable, Closeable {
 
         Log.info("Render thread init...");
         renderThread = new RenderThread();
-        renderThread.setCanvases(mapCanvas, robotCanvas, utilCanvas);
+        renderThread.setCanvases(mapCanvas, robotCanvas, utilCanvas, routeCanvas);
         MapHolder.INSTANCE.addObserver(renderThread);
         renderThread.start();
-        sp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        utilCanvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 onMouseClicked(event);
@@ -81,18 +93,61 @@ public class ImageController implements Initializable, Closeable {
     public void setStartPointButtonClick(){
         this.isStartPointing = true;
         this.isEndPointing = false;
+        getRouteButton.setDisable(true);
+        setEndPointButton.setDisable(true);
     }
     @FXML
     public void setEndPointButtonClick(){
         this.isEndPointing = true;
         this.isStartPointing = false;
+        getRouteButton.setDisable(true);
+        setStartPointButton.setDisable(true);
     }
     @FXML
     public void onMouseClicked(MouseEvent event){
-        Coordinate c = new Coordinate(event.getSceneX(), event.getSceneY());
-        Log.debug(c);
-//        if (isStartPointing) {
-//
-//        }
+        Coordinate c = new Coordinate(event.getX(), event.getY() );
+//        Log.debug(c);
+        if (isStartPointing) {
+            start = c;
+            isStartPointing = false;
+            getRouteButton.setDisable(false);
+            setEndPointButton.setDisable(false);
+        }
+        if (isEndPointing){
+            end = c;
+            isEndPointing = false;
+            getRouteButton.setDisable(false);
+            setStartPointButton.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void getRouteButtonClick(){
+        route = null;
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (start!= null && end!=null){
+                    try {
+                        BaseRouting routing;
+                        switch (AlgorithmChooserController.getType()){
+                            case ANT: routing = new AntRouting(start,end,VariablesLoader.get(GlobalVariables.getInstance().antParams)); break;
+                            case PART: routing = new SwampRouting(start,end,VariablesLoader.get(GlobalVariables.getInstance().swampParams)); break;
+                            case BEE: routing = new BeeRouting(start,end, VariablesLoader.get(GlobalVariables.getInstance().beeParams)); break;
+                            default: return;
+                        }
+                        FutureTask<Route> future = new FutureTask<>(routing);
+                        new Thread(future).start();
+                        route = future.get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 }

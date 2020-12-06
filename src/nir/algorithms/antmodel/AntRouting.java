@@ -1,6 +1,6 @@
-package nir.algorythms.antmodel;
+package nir.algorithms.antmodel;
 
-import nir.algorythms.BaseRouting;
+import nir.algorithms.BaseRouting;
 import nir.list.RouteList;
 import nir.model.Route;
 import nir.model.global.Variable;
@@ -57,13 +57,15 @@ public class AntRouting extends BaseRouting {
 
     @Override
     public Route call() {
+        Log.info("Start routing from "+ start + "  to  " + end);
         int agentsNumber = params.get("agentsNumber").intValue();
-        int iterationNumber = params.get("iterationNumber").intValue();
+        int iterationNumber = params.get("iterations").intValue();
         double phEx = params.get("phEx");
         double phThreshold = params.get("phThreshold");
 
         AgentChecker.setN(agentsNumber);
         for (int i = 0; i < iterationNumber; i++) {
+            Log.info("Iteration "+ i);
             List<Thread> threads = new ArrayList<>();
             for (RobotAgent agent : agents) {
                 AntAgentThread agentThread = new AntAgentThread();
@@ -100,9 +102,9 @@ public class AntRouting extends BaseRouting {
             }
             AgentChecker.reset();
         }
-        Log.debug("Step from " + start + " to " + end + " done");
         result = routeList.getBestRoute();
         result.add(end);
+        Log.info("Done");
         return result;
     }
 
@@ -162,9 +164,9 @@ public class AntRouting extends BaseRouting {
         double d2 = MapHolder.INSTANCE.getLevelMap().getLineLevelUpping(agent.getPosition(),new Coordinate(agent.getPosition().x + v2.getX(), agent.getPosition().y + v2.getY()));
         double d3 = MapHolder.INSTANCE.getLevelMap().getLineLevelUpping(agent.getPosition(),new Coordinate(agent.getPosition().x + v3.getX(), agent.getPosition().y + v3.getY()));
 
-        pairs.add(new Pair<>(v1,params.get("gC") * 1/(d1+1)));
-        pairs.add(new Pair<>(v2, params.get("phC") * 1/(d2 + 1)));
-        pairs.add(new Pair<>(v3, params.get("rC") * 1/(d3 + 1)));
+        pairs.add(new Pair<>(v1,params.get("goal") * 1/(d1+1)));
+        pairs.add(new Pair<>(v2, params.get("ph") * 1/(d2 + 1)));
+        pairs.add(new Pair<>(v3, params.get("rand") * 1/(d3 + 1)));
 
         EnumeratedDistribution enumeratedDistribution = new EnumeratedDistribution<Vector2D>(pairs);
         Vector2D res = (Vector2D) enumeratedDistribution.sample();
@@ -180,9 +182,9 @@ public class AntRouting extends BaseRouting {
 
     private Coordinate calculatePoint(double[] v1, double[] v2, double[] v3, RobotAgent agent) {
         double[] resV = new double[2];
-        double gC = params.get("gC");
-        double phC = params.get("phC");
-        double rC = params.get("rC");
+        double gC = params.get("goal");
+        double phC = params.get("ph");
+        double rC = params.get("rand");
 
         resV[0] = v1[0] * gC + v2[0] * phC + v3[0] * rC;
         resV[1] = v1[1] * gC + v2[1] * phC + v3[1] * rC;
