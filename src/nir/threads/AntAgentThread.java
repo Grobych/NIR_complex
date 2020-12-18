@@ -1,9 +1,9 @@
 package nir.threads;
 
-import nir.algorithms.antmodel.AgentChecker;
-import nir.algorithms.antmodel.AntRouting;
-import nir.algorithms.antmodel.RobotAgent;
-import nir.model.Route;
+import nir.model.algorithms.antmodel.AgentChecker;
+import nir.model.algorithms.antmodel.AntRouting;
+import nir.model.algorithms.antmodel.RobotAgent;
+import nir.model.base.Route;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.List;

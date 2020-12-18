@@ -1,26 +1,23 @@
 package nir.controller;
 
-import com.sun.xml.internal.ws.Closeable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import nir.list.ObstacleList;
-import nir.list.RobotList;
-import nir.model.Robot;
+import nir.model.list.ObstacleList;
+import nir.model.list.RobotList;
+import nir.model.base.Robot;
 import nir.model.global.GlobalVariables;
-import nir.model.global.VariablesFileLoader;
 import nir.tst.Tester;
-import nir.util.logging.Log;
+import nir.model.util.logging.Log;
 
-import javax.xml.ws.WebServiceException;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
-public class Controller implements Initializable, Closeable, PropertyChangeListener {
+public class Controller implements Initializable, PropertyChangeListener {
 
     private Thread t1,t2;
     private Tester tester = new Tester();
@@ -50,7 +47,7 @@ public class Controller implements Initializable, Closeable, PropertyChangeListe
     @FXML
     public void initButtonClick() throws ExecutionException, InterruptedException {
         Log.info("init");
-        tester.setParam(10, GlobalVariables.getInstance().numberRobots,GlobalVariables.getInstance().robotCapasity);
+        tester.setParam(10, GlobalVariables.getInstance().get("numberRobots").intValue(),GlobalVariables.getInstance().get("robotCapacity").intValue());
         tester.init();
         Log.info("init done");
         routeButton.setDisable(false);
@@ -93,9 +90,4 @@ public class Controller implements Initializable, Closeable, PropertyChangeListe
         logArea.appendText(propertyChangeEvent.getNewValue().toString() + "\n");
     }
 
-    @Override
-    public void close() throws WebServiceException {
-        VariablesFileLoader.save();
-
-    }
 }

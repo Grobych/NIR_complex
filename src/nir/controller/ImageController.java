@@ -1,6 +1,5 @@
 package nir.controller;
 
-import com.sun.xml.internal.ws.Closeable;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,19 +10,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
-import nir.algorithms.BaseRouting;
-import nir.algorithms.antmodel.AntRouting;
-import nir.algorithms.beemodel.BeeRouting;
-import nir.algorithms.swarmmodel.SwampRouting;
-import nir.model.Route;
+import nir.model.algorithms.BaseRouting;
+import nir.model.algorithms.antmodel.AntRouting;
+import nir.model.algorithms.beemodel.BeeRouting;
+import nir.model.algorithms.swarmmodel.SwarmRouting;
+import nir.model.base.Route;
 import nir.model.global.GlobalVariables;
 import nir.model.global.VariablesLoader;
 import nir.model.map.MapHolder;
 import nir.threads.RenderThread;
-import nir.util.logging.Log;
+import nir.model.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
-import javax.xml.ws.WebServiceException;
+import java.io.Closeable;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -73,12 +72,12 @@ public class ImageController implements Initializable, Closeable {
     }
 
     public void stop() {
+        if (renderThread != null) renderThread.stopThread();
     }
 
     @Override
-    public void close() throws WebServiceException {
-        if (renderThread != null) renderThread.stopThread();
-
+    public void close() {
+        stop();
     }
 
     public void loadMapButtonClick(){
@@ -132,7 +131,7 @@ public class ImageController implements Initializable, Closeable {
                         BaseRouting routing;
                         switch (AlgorithmChooserController.getType()){
                             case ANT: routing = new AntRouting(start,end,VariablesLoader.get(GlobalVariables.getInstance().antParams)); break;
-                            case PART: routing = new SwampRouting(start,end,VariablesLoader.get(GlobalVariables.getInstance().swampParams)); break;
+                            case PART: routing = new SwarmRouting(start,end,VariablesLoader.get(GlobalVariables.getInstance().swarmParams)); break;
                             case BEE: routing = new BeeRouting(start,end, VariablesLoader.get(GlobalVariables.getInstance().beeParams)); break;
                             default: return;
                         }

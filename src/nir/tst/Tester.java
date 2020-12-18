@@ -1,18 +1,18 @@
 package nir.tst;
 
-import nir.algorithms.antmodel.AntRouting;
-import nir.algorithms.beemodel.BeeRouting;
-import nir.algorithms.swarmmodel.SwampRouting;
-import nir.list.CargoList;
-import nir.list.RobotList;
-import nir.model.Robot;
-import nir.model.RobotCargo;
-import nir.model.Route;
+import nir.model.algorithms.antmodel.AntRouting;
+import nir.model.algorithms.beemodel.BeeRouting;
+import nir.model.algorithms.swarmmodel.SwarmRouting;
+import nir.model.list.CargoList;
+import nir.model.list.RobotList;
+import nir.model.base.Robot;
+import nir.model.base.RobotCargo;
+import nir.model.base.Route;
 import nir.model.global.GlobalVariables;
 import nir.model.global.VariablesLoader;
-import nir.model.map.Cargo;
+import nir.model.base.Cargo;
 import nir.threads.RobotMoveThread;
-import nir.util.logging.Log;
+import nir.model.util.logging.Log;
 import org.locationtech.jts.geom.Coordinate;
 
 import java.util.*;
@@ -37,7 +37,7 @@ public class Tester implements Runnable, Callable<Long> {
         this.robotCapacity = robotCapacity;
     }
 
-    public void testInit(TestType type) throws ExecutionException, InterruptedException {
+    public void testInit(AlgorithmType type) throws ExecutionException, InterruptedException {
 
         while (!isAllCargoInRoutes()){
             for (Robot robot : RobotList.getRobotList()) {
@@ -106,7 +106,7 @@ public class Tester implements Runnable, Callable<Long> {
 
     }
 
-    private Route getRouteTo(Coordinate start, Coordinate goal, TestType type) throws ExecutionException, InterruptedException {
+    private Route getRouteTo(Coordinate start, Coordinate goal, AlgorithmType type) throws ExecutionException, InterruptedException {
         switch (type){
             case ANT: {
                 AntRouting routing = new AntRouting(start,goal, VariablesLoader.get(GlobalVariables.getInstance().antParams));
@@ -116,7 +116,7 @@ public class Tester implements Runnable, Callable<Long> {
                 return route;
             }
             case PART: {
-                SwampRouting routing = new SwampRouting(start,goal,VariablesLoader.get(GlobalVariables.getInstance().swampParams)); // TODO: add params
+                SwarmRouting routing = new SwarmRouting(start,goal,VariablesLoader.get(GlobalVariables.getInstance().swarmParams)); // TODO: add params
                 FutureTask<Route> future = new FutureTask<>(routing);
                 new Thread(future).start();
                 Route route = future.get();

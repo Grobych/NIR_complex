@@ -7,7 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import nir.controller.Controller;
-import nir.util.logging.LogString;
+import nir.model.util.logging.LogString;
 import org.apache.log4j.Logger;
 
 public class Main extends Application {
@@ -33,7 +33,8 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch(args);
 //        ConsoleTester tester = new ConsoleTester();
-//        tester.testTime();
+//        tester.init();
+//        tester.testParam(AlgorithmType.BEE,"beeNumber",1,20,1);
 
         System.exit(0);
     }

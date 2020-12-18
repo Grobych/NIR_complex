@@ -7,20 +7,20 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ChoiceBox;
-import nir.tst.TestType;
+import nir.tst.AlgorithmType;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AlgorithmChooserController implements Initializable {
     @FXML
-    ChoiceBox<TestType> choiceBox;
+    ChoiceBox<AlgorithmType> choiceBox;
 
-    public static TestType type;
+    public static AlgorithmType type;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<TestType> types = FXCollections.observableArrayList(TestType.values());
+        ObservableList<AlgorithmType> types = FXCollections.observableArrayList(AlgorithmType.values());
         choiceBox.setItems(types);
         choiceBox.setValue(types.get(0));
         type = choiceBox.getValue();
@@ -32,7 +32,7 @@ public class AlgorithmChooserController implements Initializable {
         });
     }
 
-    public static TestType getType(){
+    public static AlgorithmType getType(){
         return type;
     }
 }

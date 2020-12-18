@@ -1,8 +1,6 @@
 package nir.controller;
 
-import javafx.util.converter.DoubleStringConverter;
-
-public class MyDoubleStringConverter extends DoubleStringConverter {
+public class MyDoubleStringConverter extends javafx.util.converter.DoubleStringConverter {
 
     @Override
     public Double fromString(final String value) {

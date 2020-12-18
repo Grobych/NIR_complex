@@ -1,6 +1,6 @@
 package nir.model.map;
 
-import nir.util.logging.Log;
+import nir.model.util.logging.Log;
 
 import java.util.Observable;
 

@@ -2,6 +2,7 @@ package nir.model.global;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import nir.model.util.logging.Log;
 
 public class GlobalVariables {
     private static GlobalVariables instanse = new GlobalVariables();
@@ -18,7 +19,7 @@ public class GlobalVariables {
             "goal",
             "ph",
             "rand"};
-    public String swampParams[] = {
+    public String swarmParams[] = {
             "numberRobots",
             "agentsNumber",
             "iterations",
@@ -29,16 +30,16 @@ public class GlobalVariables {
     };
     public String beeParams[] = {
             "numberRobots",
-            "agentNumber",
+            "beeAgentNumber",
             "beeNumber",
             "iterations",
             "movingDist"
     };
 
     public GlobalVariables(){
-        this.list.add(new Variable("numberRobots",10d));
-        this.list.add(new Variable("robotCapasity",1d));
-        this.list.add(new Variable("agentsNumber",10d));
+        this.list.add(new Variable("numberRobots",5d));
+        this.list.add(new Variable("robotCapacity",1d));
+        this.list.add(new Variable("agentsNumber",5d));
         this.list.add(new Variable("iterations",20d));
 
         this.list.add(new Variable("phInit",1d));
@@ -54,7 +55,7 @@ public class GlobalVariables {
         this.list.add(new Variable("toGCoef", 0.2));
         this.list.add(new Variable("steps", 300d));
 
-        this.list.add(new Variable("agentNumber", 5d));
+        this.list.add(new Variable("beeAgentNumber", 5d));
         this.list.add(new Variable("beeNumber", 10d));
 
 
@@ -67,27 +68,44 @@ public class GlobalVariables {
         instanse = variables;
     }
 
-    public int numberRobots = 10;
-    public int robotCapasity = 1;
-    public int agentsNumber = 10;
-    public int iterations = 100;
+    public void editParam(String key, Double value){
+        for (Variable v : list) {
+            if (v.getKey().equals(key)) {
+                v.setValue(value);
+                Log.debug("Param "+ key + " set to "+ value);
+                break;
+            }
+        }
+    }
 
-    // 1 part
+    public Double get(String key){
+        for (Variable v : list) {
+            if (v.getKey().equals(key)) return v.getValue();
+        }
+        return null;
+    }
 
-    public double phInit = 1;
-    public double phThreshold = 0.3;
-    public double phEx = 16000;
-    public double movingDist = 20;
-    public double movedCoordCoef = 15;
-    public double goal = 0.3;
-    public double ph = 1;
-    public double rand = 1;
-
-
-    // 2 part
-
-    public double toRCoef = 0.8;
-    public double toGCoef = 0.2;
-    public int steps = 300;
+//    public int numberRobots = 10;
+//    public int robotCapasity = 1;
+//    public int agentsNumber = 10;
+//    public int iterations = 100;
+//
+//    // 1 part
+//
+//    public double phInit = 1;
+//    public double phThreshold = 0.3;
+//    public double phEx = 16000;
+//    public double movingDist = 20;
+//    public double movedCoordCoef = 15;
+//    public double goal = 0.3;
+//    public double ph = 1;
+//    public double rand = 1;
+//
+//
+//    // 2 part
+//
+//    public double toRCoef = 0.8;
+//    public double toGCoef = 0.2;
+//    public int steps = 300;
 
 }

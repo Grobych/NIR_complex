@@ -1,6 +1,6 @@
 package nir.model.map;
 
-import nir.util.Mat;
+import nir.model.util.Mat;
 import org.locationtech.jts.geom.Coordinate;
 
 import javax.imageio.ImageIO;
